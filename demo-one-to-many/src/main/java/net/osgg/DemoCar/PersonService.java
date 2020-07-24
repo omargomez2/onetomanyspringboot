@@ -3,7 +3,7 @@
 |
 | CRUDyLeaf	- A Domain Specific Language for generating Spring Boot 
 |			REST resources from entity CRUD operations.
-| Author: Omar S. Gómez (2020)
+| Author: Omar S. Gï¿½mez (2020)
 | File Date: Tue Jul 21 10:46:46 COT 2020
 | 
  -------------------------------------------------------------------
@@ -16,6 +16,7 @@ import net.osgg.DemoCar.PersonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,9 @@ public class PersonService {
 	@Autowired
 	PersonRepository repo;
 
+	@Autowired
+	CarRepository repoCar;
+	
 	public List<Person> getAll(){
 		List<Person> personList = repo.findAll();
 		if(personList.size() > 0) {
@@ -53,7 +57,14 @@ public class PersonService {
 	}
 	
 	public Person createPerson(Person person){
-		return repo.save(person);
+		repo.save(person);
+
+		Iterator<Car> itr = person.getCars().iterator(); 
+		while(itr.hasNext()){ 
+			Car c = (Car)itr.next();
+			repoCar.save( new Car(c.getModel(), c.getYear(), person));
+		}		
+		return person;
 	}
 
 	public Person updatePerson(Person person) throws RecordNotFoundException {

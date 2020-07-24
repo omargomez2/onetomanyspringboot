@@ -11,6 +11,7 @@
 package net.osgg.DemoCar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,20 +26,22 @@ public class Car {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCar;
 	
-
 	private String model;
 	private Integer year;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_person", nullable=false)
 	private Person person;
 	
 	public Car() {}
 	
-	public Car(Person p) {
-		this.person = p;
+	public Car(String model, Integer year, Person person) {
+		super();
+		this.model = model;
+		this.year = year;
+		this.person = person;
 	}
-	
+
 	public Long getIdCar() {
 		return idCar;
 	}
@@ -62,6 +65,5 @@ public class Car {
 	
 	public void setYear(Integer year) {
 		this.year = year;
-	}
-	
+	}	
 }

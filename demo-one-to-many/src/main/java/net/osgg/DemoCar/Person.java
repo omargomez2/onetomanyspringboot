@@ -11,8 +11,10 @@
 package net.osgg.DemoCar;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -31,7 +33,7 @@ public class Person {
 	private String name;
 	private String address;
 
-	@OneToMany(mappedBy="person")
+	@OneToMany(mappedBy="person", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Car> cars;
 
 	
